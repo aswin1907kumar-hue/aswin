@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Comic Preview — ComicCraft{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <p class="eyebrow">YOUR COMIC</p>
+    <h1>Comic Preview</h1>
+    <p>Review the five panels, then download the complete comic.</p>
+</section>
+
+<div class="actions">
+    <a class="button primary" href="{{ pdf_url }}">Download Your Comic as PDF</a>
+    <a class="button secondary" href="/">Create Another</a>
+</div>
+
+<section class="comic-stack">
+{% for panel in layout %}
+<article class="comic-panel">
+    <div class="panel-number">PANEL {{ panel.panel_number }}</div>
+    <h2>{{ panel.title }}</h2>
+
+    <img
+        class="comic-image"
+        src="{{ panel.image_url }}"
+        alt="Illustration for panel {{ panel.panel_number }}: {{ panel.title }}"
+    >
+
+    <p class="scene"><em>{{ panel.scene_description }}</em></p>
+
+    {% if panel.caption %}
+    <div class="script-block">
+        <strong>Caption</strong>
+        <p>{{ panel.caption }}</p>
+    </div>
+    {% endif %}
+
+    {% if panel.narration %}
+    <div class="script-block">
+        <strong>Narration</strong>
+        <p>{{ panel.narration }}</p>
+    </div>
+    {% endif %}
+
+    {% if panel.dialogue %}
+    <div class="dialogue">
+        <strong>Dialogue</strong>
+        <p>“{{ panel.dialogue }}”</p>
+    </div>
+    {% endif %}
+
+    <details>
+        <summary>Image prompt reference</summary>
+        <p>{{ panel.image_prompt }}</p>
+    </details>
+</article>
+{% endfor %}
+</section>
+{% endblock %}

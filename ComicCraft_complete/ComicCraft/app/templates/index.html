@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Create a Comic — ComicCraft{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">CREATE • IMAGINE • EXPORT</p>
+        <h1>Turn an idea into a comic.</h1>
+        <p class="lead">
+            Describe your story, choose the mood and art style, and ComicCraft
+            will build a five-panel comic with narration, dialogue, illustrations and a PDF.
+        </p>
+    </div>
+</section>
+
+{% if error %}
+<div class="alert error">
+    <strong>Generation failed.</strong>
+    <span>{{ error }}</span>
+</div>
+{% endif %}
+
+<section class="card form-card">
+    <form method="post" action="/generate">
+        <label for="story_prompt">Story Prompt</label>
+        <textarea
+            id="story_prompt"
+            name="story_prompt"
+            maxlength="{{ settings.max_story_prompt_length }}"
+            required
+            placeholder="A brave fox discovers a hidden library in an enchanted forest..."
+        >{{ form.story_prompt if form else "" }}</textarea>
+
+        <div class="grid two">
+            <div>
+                <label for="character_name">Main Character Name</label>
+                <input id="character_name" name="character_name" maxlength="{{ settings.max_character_name_length }}" required value="{{ form.character_name if form else '' }}" placeholder="Finn">
+            </div>
+            <div>
+                <label for="setting">Setting</label>
+                <select id="setting" name="setting" required>
+                    {% for value in ["Enchanted forest", "School", "City", "Space", "Village"] %}
+                    <option value="{{ value }}" {% if form and form.setting == value %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="grid two">
+            <div>
+                <label for="tone">Story Tone</label>
+                <select id="tone" name="tone" required>
+                    {% for value in ["Light-hearted", "Dramatic", "Poetic", "Funny", "Mysterious"] %}
+                    <option value="{{ value }}" {% if form and form.tone == value %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="art_style">Art Style</label>
+                <select id="art_style" name="art_style" required>
+                    {% for value in ["Anime", "Comic book", "Pixel art", "Realistic", "Watercolor"] %}
+                    <option value="{{ value }}" {% if form and form.art_style == value %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <button class="button primary" type="submit">Create My Comic</button>
+    </form>
+</section>
+
+<section class="info-grid">
+    <article class="mini-card">
+        <span>01</span>
+        <h3>Story outline</h3>
+        <p>Gemini creates a coherent five-panel structure.</p>
+    </article>
+    <article class="mini-card">
+        <span>02</span>
+        <h3>Comic script</h3>
+        <p>Narration, captions and dialogue are expanded panel by panel.</p>
+    </article>
+    <article class="mini-card">
+        <span>03</span>
+        <h3>Illustrations</h3>
+        <p>Diffusers can generate a visual for every panel.</p>
+    </article>
+    <article class="mini-card">
+        <span>04</span>
+        <h3>PDF export</h3>
+        <p>Download the finished comic as a multi-page PDF.</p>
+    </article>
+</section>
+{% endblock %}
